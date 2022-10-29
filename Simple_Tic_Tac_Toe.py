@@ -1,90 +1,98 @@
-class TicTacToe:
-    x_o = ["_" for value in range(0, 9)]
-    matrix = [[x_o[0], x_o[1], x_o[2]], [x_o[3], x_o[4], x_o[5]], [x_o[6], x_o[7], x_o[8]]]
-    move_list = []
+a = "         "
+b = list(a)
 
-    def __init__(self):
-        self.x = None
-        self.y = None
-        self.columns = None
-        self.diagonals = None
+def grid():
+    print("---------")
+    print("|", b[0], b[1], b[2], "|")
+    print("|", b[3], b[4], b[5], "|")
+    print("|", b[6], b[7], b[8], "|")
+    print("---------")
 
-    def grid(self):
-        print("---------")
-        print(f"| {self.matrix[0][0]} {self.matrix[0][1]} {self.matrix[0][2]} |")
-        print(f"| {self.matrix[1][0]} {self.matrix[1][1]} {self.matrix[1][2]} |")
-        print(f"| {self.matrix[2][0]} {self.matrix[2][1]} {self.matrix[2][2]} |")
-        print("---------")
+grid()
 
-    def move(self, pawn):
-        x, y = input().split()
-        try:
-            if x.isdigit() and y.isdigit():
-                index = 3 * int(x) + int(y) - 4
-                if self.x_o[index] == "_":
-                    self.x_o[index] = pawn
-                x = int(x) - 1
-                y = int(y) - 1
-            if not (0 <= x <= 2 and 0 <= y <= 2):
-                print("Coordinates should be from 1 to 3!")
-            else:
-                if self.matrix[x][y] == "_":
-                    self.matrix[x][y] = pawn
-                    self.grid()
-                else:
-                    print("This cell is occupied! Choose another one!")
-        except IndexError:
-            print("Coordinates should be from 1 to 3!")
-        except ValueError:
+def x_win():
+    if b[0] + b[1] + b[2] == 'XXX':
+        return "X wins"
+    elif b[3] + b[4] + b[5] == 'XXX':
+        return "X wins"
+    elif b[6] + b[7] + b[8] == 'XXX':
+        return "X wins"
+    elif b[0] + b[3] + b[6] == 'XXX':
+        return "X wins"
+    elif b[1] + b[4] + b[7] == 'XXX':
+        return "X wins"
+    elif b[2] + b[5] + b[8] == 'XXX':
+        return "X wins"
+    elif b[0] + b[4] + b[8] == 'XXX':
+        return "X wins"
+    elif b[2] + b[4] + b[6] == 'XXX':
+        return "X wins"
+
+def o_win():
+    if b[0] + b[1] + b[2] == 'OOO':
+        return "O wins"
+    elif b[3] + b[4] + b[5] == 'OOO':
+        return "O wins"
+    elif b[6] + b[7] + b[8] == 'OOO':
+        return "O wins"
+    elif b[0] + b[3] + b[6] == 'OOO':
+        return "O wins"
+    elif b[1] + b[4] + b[7] == 'OOO':
+        return "O wins"
+    elif b[2] + b[5] + b[8] == 'OOO':
+        return "O wins"
+    elif b[0] + b[4] + b[8] == 'OOO':
+        return "O wins"
+    elif b[2] + b[4] + b[6] == 'OOO':
+        return "O wins"
+
+x_count = 0
+o_count = 0
+
+while x_count + o_count < 9:
+    while x_count < 5:
+        user_input = input()
+        x = user_input.split()[0]
+        y = user_input.split()[-1]
+        if x.isnumeric() is not True and y.isnumeric() is not True:
             print("You should enter numbers!")
-
-        self.columns = [[self.x_o[0], self.x_o[3], self.x_o[6]], [self.x_o[1], self.x_o[4], self.x_o[7]], [self.x_o[2], self.x_o[5], self.x_o[8]]]
-        self.diagonals = [[self.x_o[0], self.x_o[4], self.x_o[8]], [self.x_o[2], self.x_o[4], self.x_o[6]]]
-
-    def victory(self):
-        for row in self.matrix:
-            if row.count("X") == 3:
-                print("X wins")
-                exit()
-            elif row.count("O") == 3:
-                print("O wins")
-                exit()
-        for column in self.columns:
-            if column.count("X") == 3:
-                print("X wins")
-                exit()
-            elif column.count("O") == 3:
-                print("O wins")
-                exit()
-        for diagonal in self.diagonals:
-            if diagonal.count("X") == 3:
-                print("X wins")
-                exit()
-            elif diagonal.count("O") == 3:
-                print("O wins")
-                exit()
-
-    def play_game(self):
-        self.grid()
-        while True:
-            self.move("X")
-            self.move_list.append("X")
-            if self.victory():
-                print(self.victory)
-                break
-            elif self.move_list.count("X") + self.move_list.count("O") > 9:
-                print("Draw")
-                break
+        elif 1 > int(x) or int(x) > 3 or 1 > int(y) or int(y) > 3:
+            print("Coordinates should be from 1 to 3!")
+        elif 1 < int(x) or int(x) < 3 or 1 < int(y) or int(y) < 3:
+            new_grid = (((int(x) - 1) * 3) + (int(y) + 2)) - 3
+            if b[new_grid] != " ":
+                print("This cell is occupied! Choose another one!")
             else:
-                self.move("O")
-                self.move_list.append("O")
-                if self.victory():
-                    print(self.victory)
-                    break
-                elif len(self.move_list) == 9 and self.victory() is False:
-                    print("Draw")
-                    break
+                b[new_grid] = "X"
+                grid()
+                x_count += 1
+                break
 
+    if x_win() is not None:
+        print(x_win())
+        break
 
-tictactoe = TicTacToe()
-tictactoe.play_game()
+    while o_count < 4:
+        user_input = input()
+        x = user_input.split()[0]
+        y = user_input.split()[-1]
+        if x.isnumeric() is not True and y.isnumeric() is not True:
+            print("You should enter numbers!")
+        elif 1 > int(x) or int(x) > 3 or 1 > int(y) or int(y) > 3:
+            print("Coordinates should be from 1 to 3!")
+        elif 1 < int(x) or int(x) < 3 or 1 < int(y) or int(y) < 3:
+            new_grid = (((int(x) - 1) * 3) + (int(y) + 2)) - 3
+            if b[new_grid] != " ":
+                print("This cell is occupied! Choose another one!")
+            else:
+                b[new_grid] = "O"
+                grid()
+                o_count += 1
+                break
+
+    if o_win() is not None:
+        print(o_win())
+        break
+
+else:
+    print("Draw")
